@@ -41,12 +41,11 @@
 
 html, body {
   width: 100%;
-  height: 100%;
   min-height: 100vh;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  overflow: hidden;
+  overflow-x: hidden;
   position: relative;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -232,53 +231,57 @@ html, body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 920px;
+  max-width: 1080px;
   width: 100%;
   margin: auto;
 }
 
 .hero-headline {
   font-family: var(--font-serif);
-  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  font-size: clamp(2rem, 4.4vw, 3.8rem);
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.28;
   letter-spacing: -0.01em;
   color: var(--text-primary);
   margin-bottom: 2rem;
   animation: fadeInUp 0.9s ease backwards;
 }
 
-/* Dynamic Rotating Word Container */
+/* Dynamic Rotating Word Container - CSS Grid stack guarantees full width & zero background-clip cropping */
 .rotating-word-container {
-  display: inline-block;
-  position: relative;
-  min-width: 340px;
-  height: 1.2em;
+  display: inline-grid;
+  grid-template-areas: "word";
+  align-items: center;
+  justify-items: center;
   vertical-align: bottom;
-  text-align: center;
+  position: relative;
+  padding: 0 0.1em;
 }
 
 .rotating-word {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
+  grid-area: word;
+  display: inline-block;
   white-space: nowrap;
+  width: max-content;
+  padding: 0 0.15em;
   background: linear-gradient(135deg, #ffe9a6 0%, #f5c253 45%, #e18c28 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   opacity: 0;
-  transform: translateY(22px) scale(0.95);
-  filter: blur(6px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  visibility: hidden;
+  transform: translateY(18px) scale(0.97);
+  filter: blur(5px);
   pointer-events: none;
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.55s;
 }
 
 .rotating-word.active {
   opacity: 1;
+  visibility: visible;
   transform: translateY(0) scale(1);
   filter: blur(0);
   pointer-events: auto;
@@ -319,6 +322,10 @@ html, body {
    ========================================================================== */
 
 @media (max-width: 900px) {
+  .hero-headline {
+    font-size: clamp(1.8rem, 5.2vw, 2.9rem);
+  }
+
   .sacred-geometry-wrap {
     width: 500px;
     height: 500px;
@@ -337,10 +344,6 @@ html, body {
   .n-7 { transform: rotate(240deg) translateY(-240px) rotate(-240deg); }
   .n-8 { transform: rotate(280deg) translateY(-240px) rotate(-280deg); }
   .n-9 { transform: rotate(320deg) translateY(-240px) rotate(-320deg); }
-
-  .rotating-word-container {
-    min-width: 280px;
-  }
 }
 
 @media (max-width: 640px) {
@@ -354,13 +357,22 @@ html, body {
     min-height: 100vh;
   }
 
+  .hero-headline {
+    font-size: clamp(1.45rem, 6.2vw, 2.2rem);
+  }
+
   .headline-br {
     display: inline;
   }
 
   .rotating-word-container {
-    display: block;
-    min-width: 100%;
+    display: grid;
     margin: 0.25rem 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-headline {
+    font-size: clamp(1.3rem, 5.8vw, 1.85rem);
   }
 }
